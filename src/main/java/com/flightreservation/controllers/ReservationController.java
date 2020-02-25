@@ -18,6 +18,7 @@ import com.flightreservation.services.ReservationService;
 @Controller
 public class ReservationController {
 
+	//this is Reservation controller
 	@Autowired
 	private FlightRepository flightRepository;
 	
