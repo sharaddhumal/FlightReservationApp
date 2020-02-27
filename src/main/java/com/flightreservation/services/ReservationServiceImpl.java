@@ -3,6 +3,7 @@ package com.flightreservation.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.flightreservation.dto.ReservationRequest;
@@ -18,6 +19,8 @@ import com.flightreservation.util.PDFGenerator;
 @Service
 public class ReservationServiceImpl implements ReservationService {
 
+	@Value("${com.sharad.flightreservation.itinerary.dirpath}")
+	private String ITINERARI_DIR = "D:\\reservation";
 	@Autowired
 	private FlightRepository flightRepository;
 	@Autowired
@@ -56,7 +59,7 @@ public class ReservationServiceImpl implements ReservationService {
 		reservation.setCheckedIn(false);
 		
 		Reservation saveREservation = reservationRepository.save(reservation);
-		String filePath = "D:\\reservation"+saveREservation.getId()+".pdf";
+		String filePath = ITINERARI_DIR+saveREservation.getId()+".pdf";
 		pdfGenerator.generateItinerory(saveREservation, filePath);
 		emailUtil.sendItinerary(passenger.getMail(), filePath);
 		

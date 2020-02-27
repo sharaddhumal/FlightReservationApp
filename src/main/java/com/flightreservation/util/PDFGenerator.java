@@ -2,12 +2,19 @@ package com.flightreservation.util;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
 
 import org.springframework.stereotype.Component;
 
 import com.flightreservation.entity.Reservation;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -19,9 +26,22 @@ public class PDFGenerator {
 	public void generateItinerory(Reservation reservation, String filePath) {
 		Document document = new Document();
 		
+		String imagePath = "D:\\sharad.png";
+		Image image = null;
 		try {
 			PdfWriter.getInstance(document, new FileOutputStream(filePath));
 			document.open();
+			
+			
+			Font font = FontFactory.getFont(FontFactory.COURIER, 20, BaseColor.DARK_GRAY);
+			Chunk chunk = new Chunk("Flight Reservation Application", font);
+			document.add(chunk);
+			
+			image = Image.getInstance(imagePath);
+			image.scaleToFit(150, 150);
+			image.setAbsolutePosition(450f, 10f);
+			document.add(image);
+			
 			
 			document.add(generateTable(reservation));
 			
@@ -30,6 +50,12 @@ public class PDFGenerator {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (DocumentException e) {
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
